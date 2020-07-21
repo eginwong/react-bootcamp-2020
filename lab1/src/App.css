@@ -1,0 +1,25 @@
+.movie-app {
+    display: flex;
+    flex-direction: column;
+    background-color: lightcyan;
+    font-family: 'Segoe UI Light', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+}
+
+.movie-app__header--title {
+    text-align: center;
+}
+
+.movie-app__content {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.poster {
+    padding: 10px;
+}
+
+.poster > img {
+    width: 15rem;
+}
