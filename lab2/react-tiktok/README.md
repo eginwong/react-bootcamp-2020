@@ -1,6 +1,4 @@
-Source: https://github.com/amritzzzz/jsx-exercise
-
-
+Source: https://bitbucket.org/mickpoker/react-tiktok.git
 
 
 
