@@ -29,10 +29,26 @@ export class Films extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      films: [],
+      id: ""
+    }
+  }
+
+  async componentDidMount() {
+    const films = await fetchFilms();
+    this.setState({ films });
+  }
+
+  handleIdChange(selectedId) {
+    this.setState({id: selectedId});
   }
 
   render() {
     const films = this.state ? this.state.films : [];
+    const match = this.props.match;
+    const id = this.state.id;
+    console.dir(`${match.path}/:id`);
     
     return (
       <Container>
@@ -47,8 +63,8 @@ export class Films extends React.Component {
                   {
                     films.map(film => {
                       return (
-                        <ListGroup.Item as={ Link } key={ film.id } action variant='light'
-                                        >
+                        <ListGroup.Item as={ Link } key={ film.id } action variant='light' to={`${match.url}/${film.id}`}
+                        className={ id && id === film.id ? "active": ""}>
                           {film.title}
                         </ListGroup.Item>
                       );
@@ -58,7 +74,12 @@ export class Films extends React.Component {
               </div>
               <Col style={{'height': '70vh', 'overflowY': 'auto'}}>
                 <Tab.Content>
-                  { C.INCOMPLETE_2_FULL }
+                  <Switch>
+                    <Route exact path={`${match.path}/:id`} render={(props) => <FilmDetails {...props} onIdChange={(selectedId) => this.handleIdChange(selectedId)} />} />
+                    <Route path={`${match.path}`}>
+                      {C.SELECT_FILM }
+                    </Route>
+                  </Switch>
                 </Tab.Content>
               </Col>
             </Row>

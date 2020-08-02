@@ -19,6 +19,36 @@ export class FilmDetails extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      film: {},
+      filmChildren: {}
+    }
+  }
+
+  async componentDidMount() {
+    const id = this.props.match.params.id;
+    this.evtHandler(id);
+    const film = await fetchFilm(id);
+    this.setState({film, filmChildren: {}});
+  }
+  
+  async componentDidUpdate(prevProps, prevState) {
+    const id = this.props.match.params.id;
+    if(prevProps.match.params.id !== id) {
+      this.evtHandler(id);
+      const film = await fetchFilm(id);
+      this.setState({film});
+    } else if(prevState.film !== this.state.film) {
+      this.generateChildren();
+    }
+  }
+
+  componentWillUnmount() {
+    this.handleChange("");
+  }
+
+  evtHandler(id) {
+    this.props.onIdChange(id);
   }
 
   generateChildren() {

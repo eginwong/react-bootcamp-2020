@@ -1,20 +1,19 @@
 import React from "react";
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   NavLink,
 } from "react-router-dom";
-import Container from 'react-bootstrap/Container';
-import * as C from './FilmConstants'
-import { Films } from './FilmsClass';
+import Container from "react-bootstrap/Container";
+import * as C from "./FilmConstants";
+import { Films } from "./FilmsClass";
 
 export default function App() {
-
   // 1. Modify the behaviour of the Navbar.Brand and Nav.Link elements to behave as a react-router <NavLink>.
-  //    Using <NavLink> will not trigger a full page refresh when navigating within a router. 
+  //    Using <NavLink> will not trigger a full page refresh when navigating within a router.
   //    Hint: Use 'as' attribute
   // 2. Replace the current <Home> return with  two <Route> components within a <Switch> component
   //    a. The first route will render the <Films> component if the path is "/films"
@@ -22,14 +21,21 @@ export default function App() {
 
   return (
     <div>
-      <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="/home">Lab 3 (Router)</Navbar.Brand>
-        <Nav className="mr-auto">
-          <Nav.Link href="/home">Home</Nav.Link>
-          <Nav.Link href="/films">Films</Nav.Link>
-        </Nav>
-      </Navbar>
-      <Home />
+      <Router>
+        <Navbar bg="dark" variant="dark">
+          <Navbar.Brand as={NavLink} to="/home">Lab 3 (Router)</Navbar.Brand>
+          <Nav className="mr-auto">
+            <Nav.Link as={NavLink} to="/home">Home</Nav.Link>
+            <Nav.Link as={NavLink} to="/films">Films</Nav.Link>
+          </Nav>
+        </Navbar>
+        <Switch>
+          <Route path="/films" component={Films} />
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </Router> 
     </div>
   );
 }
