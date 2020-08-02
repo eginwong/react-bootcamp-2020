@@ -18,8 +18,25 @@ export const FilmDetails = ({ onIdChange }) => {
   // 4. Add an event handler inside the film effect to use the provided onIdChange function
   //    - Modify the effect to run when onIdChange is changed along with id
 
-  const film = null;
-  const filmChildren = null;
+  const {id} = useParams();
+  const [film, setFilm] = useState({});
+  const [filmChildren, setFilmChildren] = useState({});
+
+  useEffect(() => {
+    const handleChange = (id) => onIdChange(id);
+    (async() => {
+      const film = await fetchFilm(id);
+      setFilm(film);
+    })();
+    handleChange(id);
+    return () => handleChange("");
+  }, [id, onIdChange]);
+
+  useEffect(() => {
+    if (film && Object.keys(film).length > 0) {
+      generateChildren(film, setFilmChildren);
+    }
+  }, [film]);
 
   const filmElements = getFilmElements(film, filmChildren);
 

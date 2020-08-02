@@ -24,13 +24,18 @@ const App = () => {
     <div>
       <Router>
         <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="/home">Lab 3 (Router)</Navbar.Brand>
+          <Navbar.Brand as={NavLink} to="/home">Lab 3 (Router)</Navbar.Brand>
           <Nav className="mr-auto">
-            <Nav.Link href="/home">Home</Nav.Link>
-            <Nav.Link href="/films">Films</Nav.Link>
+            <Nav.Link as={NavLink} to="/home">Home</Nav.Link>
+            <Nav.Link as={NavLink} to="/films">Films</Nav.Link>
           </Nav>
         </Navbar>
-        <Home />
+        <Switch>
+          <Route path="/films" component={Films}/>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
       </Router> 
     </div>
   );

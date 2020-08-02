@@ -30,9 +30,20 @@ export const Films = () => {
   //    c. Pass it as a prop called onIdChange to the FilmDetails component in the route you created in the previous step
   //    d. Add a "className" property to the ListGroup.Item elements that will conditionally set the class to "active" or "" depending if the state id matches the element's film.id
   
-  const id = null;
-  const films = null;
+  const [id, setId] = useState("");
+  const [films, setFilms] = useState([]);
 
+  useEffect(() => {
+    (async() => {
+      const films = await fetchFilms();
+      setFilms(films);
+    })();
+  }, []); // need to pass empty dependency object here, otherwise will constantly rerun
+  
+  const handleIdChange = useCallback((selectedId) => setId(selectedId), []);
+
+  const match = useRouteMatch();
+  
   return (
     <Container>
       <h3 className="display-3" style={{'marginBottom': '10px'}}>
@@ -47,6 +58,8 @@ export const Films = () => {
                   ( films ? films : [] ).map(film =>  {
                     return (
                       <ListGroup.Item as={ Link } key={ film.id } action variant='light'
+                        to={`${match.url}/${film.id}`}
+                        className={ id && id === film.id? "active" : ""}
                                       >
                         {film.title}
                       </ListGroup.Item>
@@ -57,7 +70,12 @@ export const Films = () => {
             </div >
             <Col style={{'height': '70vh', 'overflowY': 'auto'}}>
               <Tab.Content>
-                { C.INCOMPLETE_2_FULL }
+              <Switch>
+                    <Route exact path={`${match.path}/:id`} render={(props) => <FilmDetails {...props} onIdChange={(selectedId) => handleIdChange(selectedId)} />} />
+                    <Route path={`${match.path}`}>
+                      { C.SELECT_FILM }
+                    </Route>
+                </Switch>
               </Tab.Content>
             </Col>
           </Row>
